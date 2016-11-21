@@ -5,7 +5,7 @@
     "clean": "rimraf output .psa-stash",
     "build": "pulp build -- --censor-lib --strict --stash",
     "repl": "pulp psci",
-    "test": "npm run build && node -e \"require('./output/Test.Main').main()\""
+    "test": "pulp test"
   },
   "dependencies": {
     "purescript": "^0.10.2",

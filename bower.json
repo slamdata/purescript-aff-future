@@ -1,7 +1,7 @@
 {
   "name": "purescript-aff-future",
   "homepage": "https://github.com/slamdata/purescript-aff-future",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/slamdata/purescript-aff-future.git"

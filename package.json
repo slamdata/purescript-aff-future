@@ -3,13 +3,14 @@
   "private": true,
   "scripts": {
     "clean": "rimraf output .psa-stash",
-    "build": "psa \"src/**/*.purs\" \"test/**/*.purs\" \"bower_components/purescript-*/src/**/*.purs\" --censor-lib --strict --stash",
-    "repl": "psci \"src/**/*.purs\" \"bower_components/purescript-*/src/**/*.purs\"",
+    "build": "pulp build -- --censor-lib --strict --stash",
+    "repl": "pulp psci",
     "test": "npm run build && node -e \"require('./output/Test.Main').main()\""
   },
   "dependencies": {
     "purescript": "^0.10.2",
     "purescript-psa": "^0.4.0",
-    "rimraf": "^2.5.4"
+    "rimraf": "^2.5.4",
+    "pulp": "^10.0.0"
   }
 }

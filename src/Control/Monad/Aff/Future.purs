@@ -11,7 +11,7 @@ import Prelude
 import Control.Apply (lift2)
 import Control.Monad.Aff.AVar (AffAVar, AVAR, makeVar', makeVar, takeVar, putVar, modifyVar)
 import Control.Monad.Aff.Class (class MonadAff, liftAff)
-import Control.Monad.Fork (class MonadFork, fork)
+import Control.Monad.Fork.Class (class MonadFork, fork)
 import Control.Monad.Rec.Class (class MonadRec, tailRecM)
 
 import Data.Either (Either(..))

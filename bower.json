@@ -24,7 +24,7 @@
     "purescript-aff": "^2.0.0",
     "purescript-lists": "^3.2.0",
     "purescript-foldable-traversable": "^2.0.0",
-    "purescript-fork": "^1.0.0",
+    "purescript-fork": "^1.1.0",
     "purescript-tailrec": "^2.0.0"
   },
   "devDependencies": {

@@ -32,7 +32,6 @@ import Control.Monad.Rec.Class (class MonadRec, tailRecM)
 
 import Data.Either (Either(..))
 import Data.Foldable (foldl, sequence_)
-import Data.HeytingAlgebra (ff, tt, implies)
 import Data.List ((:))
 import Data.Monoid (class Monoid, mempty)
 
@@ -43,9 +42,8 @@ newtype Future a = Future (∀ eff. AffAVar eff a)
 -- | that the computation will not initiate until a consumer requests it.
 defer
   ∷ ∀ m eff e a
-  . ( MonadAff (avar ∷ AVAR | eff) m
-    , MonadFork e m
-    )
+  . MonadAff (avar ∷ AVAR | eff) m
+  ⇒ MonadFork e m
   ⇒ m a
   → m (Future a)
 defer run = do
@@ -53,7 +51,7 @@ defer run = do
   consumers ← liftAff (makeVar' mempty)
   force ← liftAff makeVar
 
-  fork do
+  _ ← fork do
     liftAff (takeVar force)
     res ← run
     liftAff do
@@ -78,14 +76,13 @@ defer run = do
 -- | Forks an asynchronous computation, initiating it immediately.
 defer'
   ∷ ∀ m eff e a
-  . ( MonadAff (avar ∷ AVAR | eff) m
-    , MonadFork e m
-    )
+  . MonadAff (avar ∷ AVAR | eff) m
+  ⇒ MonadFork e m
   ⇒ m a
   → m (Future a)
 defer' run = do
   res ← defer run
-  fork (wait res)
+  _ ← fork (wait res)
   pure res
 
 -- | Blocks until the Future completes, returning the result. If the Future has
@@ -129,24 +126,3 @@ instance monoidFuture ∷ (Monoid a) ⇒ Monoid (Future a) where
 
 instance monadRecFuture ∷ MonadRec Future where
   tailRecM k a = Future (tailRecM (wait <<< k) a)
-
-instance heytingAlgebraFuture ∷ HeytingAlgebra a ⇒ HeytingAlgebra (Future a) where
-  not = map not
-  disj = lift2 disj
-  conj = lift2 conj
-  implies = lift2 implies
-  tt = pure tt
-  ff = pure ff
-
-instance booleanAlgebraFuture ∷ BooleanAlgebra a ⇒ BooleanAlgebra (Future a)
-
-instance semiringFuture ∷ Semiring a ⇒ Semiring (Future a) where
-  one = pure one
-  mul = lift2 mul
-  zero = pure zero
-  add = lift2 add
-
-instance ringFuture ∷ Ring a ⇒ Ring (Future a) where
-  sub = lift2 sub
-
-instance commutativeRingFuture ∷ CommutativeRing a ⇒ CommutativeRing (Future a)
